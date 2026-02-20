@@ -4,6 +4,9 @@
   "description": "A Foundry VTT module based on API snippets.",
   "version": "1.0.0",
   "author": "Daulet",
+  "url": "https://github.com/Runwithwolves/FoundryShowAC",
+  "manifest": "https://raw.githubusercontent.com/Runwithwolves/FoundryShowAC/main/module.json",
+  "download": "https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip",
   "esmodules": ["index.js"],
   "compatibility": {
     "minimum": "12.331",
