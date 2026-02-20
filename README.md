@@ -19,6 +19,12 @@ https://raw.githubusercontent.com/Runwithwolves/FoundryShowAC/main/module.json
 If you prefer a manual installation, you can download the module ZIP here:
 [https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip](https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip)
 
+### Patch Notes (v1.1.4)
+- New: Hand-picked color palette available via Module Settings → DnD 5e show AC → AC Color Palette. GMs can choose a color using an in-game palette.
+- Manual Input: A hex code field is shown below the palette and stays synchronized; you can paste or type a hex value.
+- Behavior: Only the shield icon and badge border change color; the AC value text remains white.
+- Live Update: Changes apply immediately for GMs; no reload required.
+
 ### Patch Notes (v1.1.3)
 - Updated title to 'DnD 5e show AC' and bumped version to 1.1.3.
 

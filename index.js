@@ -213,19 +213,120 @@ class ACOverlayManager {
 // Create the manager instance
 const acOverlayManager = new ACOverlayManager();
 
+/**
+ * Settings menu with a color palette and manual hex input
+ */
+class ACColorMenu extends Application {
+    static get defaultOptions() {
+        return foundry.utils.mergeObject(super.defaultOptions, {
+            id: 'foundry-ac-color-menu',
+            title: 'AC Color Palette',
+            template: null,
+            popOut: true,
+            width: 420,
+            height: 'auto',
+            classes: ['foundry-ac', 'ac-color-menu']
+        });
+    }
+
+    getData(options) {
+        return {
+            color: game.settings.get('foundry-ac', 'acColor') || '#ff0000'
+        };
+    }
+
+    async _renderInner(data) {
+        const color = data.color || '#ff0000';
+        const html = $(`
+          <form class="ac-color-form">
+            <div class="form-group">
+              <label>Pick Color</label>
+              <input type="color" name="color" value="${color}" />
+              <p class="notes">Choose a color using the palette. Applies to the shield icon and the badge border. The AC number remains white.</p>
+            </div>
+            <div class="form-group">
+              <label>Hex Code</label>
+              <input type="text" name="hex" value="${color}" placeholder="#ffffff" />
+              <p class="notes">You can also enter a hex color code manually. It will stay synchronized with the picker above.</p>
+            </div>
+            <footer class="sheet-footer flexrow">
+              <button type="submit" class="submit"><i class="fas fa-save"></i> Save & Close</button>
+              <button type="button" class="reset"><i class="fas fa-undo"></i> Reset to Default</button>
+            </footer>
+          </form>
+        `);
+        return html;
+    }
+
+    activateListeners(html) {
+        super.activateListeners(html);
+
+        const $form = html.find('form.ac-color-form');
+        const $color = html.find('input[name="color"]');
+        const $hex = html.find('input[name="hex"]');
+
+        const normalizeHex = (v) => {
+            if (!v) return null;
+            let s = String(v).trim();
+            if (!s) return null;
+            if (!s.startsWith('#')) s = `#${s}`;
+            s = s.toLowerCase();
+            return /^#([0-9a-f]{6})$/.test(s) ? s : null;
+        };
+
+        const apply = async (hex) => {
+            const valid = normalizeHex(hex);
+            if (!valid) return;
+            // Persist to settings
+            await game.settings.set('foundry-ac', 'acColor', valid);
+            // Live-apply for GMs
+            if (game.user?.isGM && acOverlayManager) acOverlayManager.setColor(valid);
+            // Sync inputs
+            $hex.val(valid);
+            $color.val(valid);
+        };
+
+        $color.on('input change', (ev) => apply(ev.currentTarget.value));
+        $hex.on('input change', (ev) => apply(ev.currentTarget.value));
+
+        $form.on('submit', (ev) => {
+            ev.preventDefault();
+            this.close();
+        });
+
+        html.find('button.reset').on('click', (ev) => {
+            ev.preventDefault();
+            const setting = game.settings.settings.get('foundry-ac.acColor');
+            const def = setting?.default ?? '#ff0000';
+            apply(def);
+        });
+    }
+}
+
 // Register module settings (color palette)
 Hooks.once('init', () => {
+    // Hidden storage setting; UI provided via menu below
     game.settings.register('foundry-ac', 'acColor', {
         name: 'AC Badge Color',
         hint: 'Hex color (e.g., #ff0000). Changes the shield icon and border color. AC value remains white.',
         scope: 'world',
-        config: true,
+        config: false,
         type: String,
         default: '#ff0000',
         onChange: (value) => {
             // Update live for GMs
             if (game.user?.isGM && acOverlayManager) acOverlayManager.setColor(value);
         }
+    });
+
+    // Menu entry to open the palette UI
+    game.settings.registerMenu('foundry-ac', 'acColorMenu', {
+        name: 'AC Color Palette',
+        label: 'Open Palette',
+        hint: 'Pick from a color palette or enter a hex code. Applies to the shield icon and border. AC value remains white.',
+        icon: 'fas fa-palette',
+        type: ACColorMenu,
+        restricted: true
     });
 });
 
