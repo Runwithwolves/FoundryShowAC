@@ -1,13 +1,14 @@
 {
   "id": "foundry-ac",
-  "title": "Foundry AC Module",
-  "description": "A Foundry VTT module based on API snippets.",
-  "version": "1.0.0",
-  "author": "Daulet",
+  "title": "DnD 5e show AC Module",
+  "description": "A Foundry VTT module that displays Armour Class on tokens for Gamemasters.",
+  "version": "1.1.0",
+  "author": "Runwithwolves",
   "url": "https://github.com/Runwithwolves/FoundryShowAC",
   "manifest": "https://raw.githubusercontent.com/Runwithwolves/FoundryShowAC/main/module.json",
   "download": "https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip",
   "esmodules": ["index.js"],
+  "styles": ["style.css"],
   "compatibility": {
     "minimum": "12.331",
     "verified": "12.331"
