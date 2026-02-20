@@ -7,6 +7,7 @@ class ACOverlayManager {
     constructor() {
         this.overlays = new Map();
         this.container = null;
+        this.color = '#ff0000';
     }
 
     /**
@@ -17,6 +18,13 @@ class ACOverlayManager {
         if (!game.user.isGM) return;
 
         console.log('DnD 5e show AC | Initializing ACOverlayManager');
+
+        // Apply current color setting from module settings
+        try {
+            this.setColor(game.settings.get('foundry-ac', 'acColor'));
+        } catch (e) {
+            this.setColor('#ff0000');
+        }
 
         Hooks.on('canvasReady', () => this.drawAll());
         Hooks.on('updateActor', (actor) => this.updateActor(actor));
@@ -54,7 +62,19 @@ class ACOverlayManager {
         this.container.style.left = '0';
         this.container.style.pointerEvents = 'none';
         this.container.style.zIndex = '100';
+        this.container.style.setProperty('--ac-badge-color', this.color || '#ff0000');
         document.body.appendChild(this.container);
+    }
+
+    /**
+     * Set or update the current badge color and propagate to the container CSS variable.
+     * @param {string} color
+     */
+    setColor(color) {
+        this.color = color || '#ff0000';
+        if (this.container) {
+            this.container.style.setProperty('--ac-badge-color', this.color);
+        }
     }
 
     /**
@@ -192,6 +212,22 @@ class ACOverlayManager {
 
 // Create the manager instance
 const acOverlayManager = new ACOverlayManager();
+
+// Register module settings (color palette)
+Hooks.once('init', () => {
+    game.settings.register('foundry-ac', 'acColor', {
+        name: 'AC Badge Color',
+        hint: 'Hex color (e.g., #ff0000). Changes the shield icon and border color. AC value remains white.',
+        scope: 'world',
+        config: true,
+        type: String,
+        default: '#ff0000',
+        onChange: (value) => {
+            // Update live for GMs
+            if (game.user?.isGM && acOverlayManager) acOverlayManager.setColor(value);
+        }
+    });
+});
 
 // Initialize the module logic once Foundry is ready
 Hooks.once('ready', () => {
