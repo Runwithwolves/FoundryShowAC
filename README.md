@@ -1,4 +1,4 @@
-# DnD 5e show AC
+# DnD AC Show
 
 This Foundry VTT module displays the Armour Class (AC) of characters and NPCs directly on their tokens on the canvas. 
 
@@ -18,6 +18,15 @@ https://raw.githubusercontent.com/Runwithwolves/FoundryShowAC/main/module.json
 ### Direct Download Link
 If you prefer a manual installation, you can download the module ZIP here:
 [https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip](https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip)
+
+### Patch Notes (v1.1.5)
+- **Bug Fix**: Fixed an issue where the module was not appearing in the Module Settings list.
+- **Renamed**: Module title updated to **DnD AC Show**.
+- **Settings Refactor**: Color settings are now integrated directly into the Module Settings list for easier access.
+  - **AC Color Palette**: A hand-picked color picker.
+  - **AC Color Hex**: A manual text input for hex codes.
+  - Both options are synchronized in real-time.
+- **Improved UI**: Cleaner integration with Foundry VTT's native settings menu.
 
 ### Patch Notes (v1.1.4)
 - New: Hand-picked color palette available via Module Settings → DnD 5e show AC → AC Color Palette. GMs can choose a color using an in-game palette.
