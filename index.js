@@ -25,6 +25,17 @@ class ACOverlayManager {
         Hooks.on('deleteToken', (tokenDoc) => this.removeToken(tokenDoc.id));
         Hooks.on('canvasPan', () => this.syncAll());
         Hooks.on('refreshToken', (token) => this.syncToken(token));
+
+        // Additional hooks to catch AC changes from items and effects
+        const updateOnChildDoc = (doc) => {
+            if (doc.parent instanceof Actor) this.updateActor(doc.parent);
+        };
+        Hooks.on('createItem', updateOnChildDoc);
+        Hooks.on('updateItem', updateOnChildDoc);
+        Hooks.on('deleteItem', updateOnChildDoc);
+        Hooks.on('createActiveEffect', updateOnChildDoc);
+        Hooks.on('updateActiveEffect', updateOnChildDoc);
+        Hooks.on('deleteActiveEffect', updateOnChildDoc);
         
         // If canvas is already ready, draw immediately
         if (canvas.ready) this.drawAll();
@@ -63,10 +74,13 @@ class ACOverlayManager {
      * @param {Actor} actor
      */
     updateActor(actor) {
-        const tokens = actor.getActiveTokens();
-        for (let token of tokens) {
-            this.updateToken(token);
-        }
+        // Use a small delay to ensure derived data (AC) is fully recalculated by the system
+        setTimeout(() => {
+            const tokens = actor.getActiveTokens();
+            for (let token of tokens) {
+                this.updateToken(token);
+            }
+        }, 100);
     }
 
     /**
@@ -96,7 +110,13 @@ class ACOverlayManager {
             this.overlays.set(token.id, badge);
         }
 
-        badge.innerHTML = `<i class="fas fa-shield-alt"></i> ${ac}`;
+        // Only update innerHTML if the value actually changed to avoid redundant DOM writes
+        const acStr = String(ac);
+        if (badge.dataset.ac !== acStr) {
+            badge.innerHTML = `<i class="fas fa-shield-alt"></i> ${ac}`;
+            badge.dataset.ac = acStr;
+        }
+        
         this.syncToken(token);
     }
 
@@ -138,6 +158,16 @@ class ACOverlayManager {
         }
 
         badge.style.display = 'flex';
+
+        // Proactively check if AC changed (fallback for missed update hooks)
+        const ac = token.actor?.system?.attributes?.ac?.value;
+        if (ac !== undefined && ac !== null) {
+            const acStr = String(ac);
+            if (badge.dataset.ac !== acStr) {
+                badge.innerHTML = `<i class="fas fa-shield-alt"></i> ${ac}`;
+                badge.dataset.ac = acStr;
+            }
+        }
         
         // Map canvas coordinates (bottom-left of token) to global screen coordinates
         const globalPos = token.worldTransform.apply(new PIXI.Point(0, token.h));
