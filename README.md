@@ -1,4 +1,4 @@
-# DnD 5e show AC Module
+# DnD 5e show AC
 
 This Foundry VTT module displays the Armour Class (AC) of characters and NPCs directly on their tokens on the canvas. 
 
@@ -18,6 +18,9 @@ https://raw.githubusercontent.com/Runwithwolves/FoundryShowAC/main/module.json
 ### Direct Download Link
 If you prefer a manual installation, you can download the module ZIP here:
 [https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip](https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip)
+
+### Patch Notes (v1.1.3)
+- Updated title to 'DnD 5e show AC' and bumped version to 1.1.3.
 
 ### Patch Notes (v1.1.2)
 - New: Module setting "AC Badge Color" in Module Settings. Enter a hex color (e.g., #00ff88) to change the shield icon and border color of the AC badge. The AC number remains white.
