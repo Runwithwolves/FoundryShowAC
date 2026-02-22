@@ -57,11 +57,18 @@ class ACOverlayManager {
     }
 
     /**
-     * Ensure the DOM container for overlays exists and is attached to the body.
+     * Ensure the DOM container for overlays exists and is attached to the canvas.
      * @private
      */
     _ensureContainer() {
-        if (this.container && document.body.contains(this.container)) return;
+        const canvasEl = canvas.app.view;
+        if (!canvasEl) return;
+        
+        const parent = canvasEl.parentElement;
+        if (!parent) return;
+
+        if (this.container && parent.contains(this.container)) return;
+        
         this.container = document.createElement('div');
         this.container.id = 'dnd5e-ac-overlay-container';
         this.container.style.position = 'absolute';
@@ -71,8 +78,7 @@ class ACOverlayManager {
         this.container.style.zIndex = '100';
         this.container.style.setProperty('--ac-badge-color', this.color || '#ff0000');
         
-        const canvasEl = canvas.app.view;
-        canvasEl.parentElement.appendChild(this.container);
+        parent.appendChild(this.container);
     }
 
     /**
@@ -205,10 +211,10 @@ class ACOverlayManager {
         
         // Map canvas coordinates (bottom-left of token) to screen coordinates relative to canvas
         const globalPos = token.worldTransform.apply(new PIXI.Point(0, token.h));
-        const rect = canvas.app.view.getBoundingClientRect();
         
-        badge.style.left = `${rect.left + globalPos.x}px`;
-        badge.style.top = `${rect.top + globalPos.y}px`;
+        // Coordinates from worldTransform are already relative to the canvas renderer
+        badge.style.left = `${globalPos.x}px`;
+        badge.style.top = `${globalPos.y}px`;
         
         // Apply scaling if desired, but here we keep it mostly constant 
         // We can optionally scale the badge with the canvas zoom for better look

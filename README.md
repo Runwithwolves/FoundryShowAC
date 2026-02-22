@@ -20,6 +20,13 @@ https://raw.githubusercontent.com/Runwithwolves/FoundryShowAC/main/module.json
 If you prefer a manual installation, you can download the module ZIP here:
 [https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip](https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip)
 
+### Patch Notes (v1.1.8)
+- **Critical Positioning Fix**: Attached the overlay container directly to the canvas DOM hierarchy and removed viewport-relative offsets. This ensures perfect alignment regardless of UI scaling or sidebar state.
+- **Improved Defensive Logic**: Added additional checks for `tokenDoc.object` to ensure stability during early rendering phases.
+- **Manifest Refinement**: Verified `authors` structure and `system` restriction for D&D5e compatibility.
+- **Clean Rendering**: Removed unnecessary spaces in AC badges and ensured icon rendering matches intended CSS.
+- **Git Hygiene**: Fully purged `.idea` metadata from version control.
+
 ### Patch Notes (v1.1.7)
 - **Critical Fix**: Updated overlay positioning to be relative to the canvas bounding box, fixing alignment issues with UI scaling or layout changes.
 - **Improved Structure**: Restructured module files into `scripts/` and `styles/` directories.
