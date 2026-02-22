@@ -8,6 +8,7 @@ class ACOverlayManager {
         this.overlays = new Map();
         this.container = null;
         this.color = '#ff0000';
+        this.enabled = true;
     }
 
     /**
@@ -19,11 +20,13 @@ class ACOverlayManager {
 
         console.log('DnD AC Show | Initializing ACOverlayManager');
 
-        // Apply current color setting from module settings
+        // Apply current settings from module
         try {
             this.setColor(game.settings.get('foundry-ac', 'acColor'));
+            this.enabled = game.settings.get('foundry-ac', 'enabled');
         } catch (e) {
             this.setColor('#ff0000');
+            this.enabled = true;
         }
 
         Hooks.on('canvasReady', () => this.drawAll());
@@ -109,6 +112,11 @@ class ACOverlayManager {
      */
     updateToken(token) {
         if (!token || !token.actor || !token.id) return;
+
+        if (!this.enabled) {
+            this.removeToken(token.id);
+            return;
+        }
         
         // Only show for character and npc types in D&D 5e
         const allowedTypes = ['character', 'npc'];
@@ -172,7 +180,7 @@ class ACOverlayManager {
         if (!badge) return;
 
         // Handle visibility (e.g. if token is hidden or on another layer)
-        if (!token.visible || !token.renderable) {
+        if (!token.visible || !token.renderable || !this.enabled) {
             badge.style.display = 'none';
             return;
         }
@@ -240,6 +248,42 @@ Hooks.once('init', () => {
             if (acOverlayManager) acOverlayManager.setColor(value);
         }
     });
+
+    // 3. Toggle state
+    game.settings.register('foundry-ac', 'enabled', {
+        name: 'Show AC Overlays',
+        scope: 'world',
+        config: false,
+        type: Boolean,
+        default: true,
+        onChange: (value) => {
+            if (acOverlayManager) {
+                acOverlayManager.enabled = value;
+                acOverlayManager.drawAll();
+            }
+        }
+    });
+});
+
+/**
+ * Add a toggle button to the Token Instruments sub-menu.
+ */
+Hooks.on('getSceneControlButtons', (controls) => {
+    if (!game.user.isGM) return;
+
+    const tokenControls = controls.find(c => c.name === 'token');
+    if (tokenControls) {
+        tokenControls.tools.push({
+            name: 'toggle-ac-show',
+            title: 'Toggle AC Display',
+            icon: 'fas fa-shield-alt',
+            toggle: true,
+            active: game.settings.get('foundry-ac', 'enabled'),
+            onClick: (toggled) => {
+                game.settings.set('foundry-ac', 'enabled', toggled);
+            }
+        });
+    }
 });
 
 /**

@@ -4,6 +4,7 @@ This Foundry VTT module displays the Armour Class (AC) of characters and NPCs di
 
 ### Features
 - **GM Only**: The AC badges are only visible to users with the Gamemaster role.
+- **Toggle Display**: A new toggle button in the Token Instruments menu allows GMs to quickly show or hide all AC overlays.
 - **Dynamic Positioning**: The badge is positioned at the bottom-left of the token and moves with it.
 - **Auto-Sync**: AC values update automatically when the actor's data changes.
 - **Non-Intrusive**: No modifications to core system templates or actor sheets.
@@ -18,6 +19,12 @@ https://raw.githubusercontent.com/Runwithwolves/FoundryShowAC/main/module.json
 ### Direct Download Link
 If you prefer a manual installation, you can download the module ZIP here:
 [https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip](https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip)
+
+### Patch Notes (v1.1.6)
+- **New Feature**: Added a toggle button to the **Token Instruments** (left-hand controls) to enable/disable AC overlays.
+  - Icon: A white shield icon.
+  - Clicking the icon toggles all AC overlays on or off globally for the GM.
+- **Version Bump**: Updated module version to 1.1.6.
 
 ### Patch Notes (v1.1.5)
 - **Bug Fix**: Fixed an issue where the module was not appearing in the Module Settings list.

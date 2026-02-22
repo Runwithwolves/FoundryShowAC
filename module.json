@@ -2,7 +2,7 @@
   "id": "foundry-ac",
   "title": "DnD AC Show",
   "description": "A Foundry VTT module that displays Armour Class on tokens for Gamemasters.",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "author": "Runwithwolves",
   "url": "https://github.com/Runwithwolves/FoundryShowAC",
   "manifest": "https://raw.githubusercontent.com/Runwithwolves/FoundryShowAC/main/module.json",
