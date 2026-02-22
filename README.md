@@ -20,6 +20,9 @@ https://raw.githubusercontent.com/Runwithwolves/FoundryShowAC/main/module.json
 If you prefer a manual installation, you can download the module ZIP here:
 [https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip](https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip)
 
+### Patch Notes (v1.1.9)
+- **UI Layering Fix**: Adjusted z-index and container properties to ensure AC badges render behind Foundry's UI panels (sidebars, folders, etc.) and stay contained within the canvas area.
+
 ### Patch Notes (v1.1.8)
 - **Critical Positioning Fix**: Attached the overlay container directly to the canvas DOM hierarchy and removed viewport-relative offsets. This ensures perfect alignment regardless of UI scaling or sidebar state.
 - **Improved Defensive Logic**: Added additional checks for `tokenDoc.object` to ensure stability during early rendering phases.

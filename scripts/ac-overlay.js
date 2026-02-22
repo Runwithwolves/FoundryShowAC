@@ -75,7 +75,10 @@ class ACOverlayManager {
         this.container.style.top = '0';
         this.container.style.left = '0';
         this.container.style.pointerEvents = 'none';
-        this.container.style.zIndex = '100';
+        this.container.style.zIndex = '0';
+        this.container.style.overflow = 'hidden';
+        this.container.style.width = '100%';
+        this.container.style.height = '100%';
         this.container.style.setProperty('--ac-badge-color', this.color || '#ff0000');
         
         parent.appendChild(this.container);
