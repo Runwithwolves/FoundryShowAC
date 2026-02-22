@@ -20,6 +20,13 @@ https://raw.githubusercontent.com/Runwithwolves/FoundryShowAC/main/module.json
 If you prefer a manual installation, you can download the module ZIP here:
 [https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip](https://github.com/Runwithwolves/FoundryShowAC/archive/refs/heads/main.zip)
 
+### Patch Notes (v1.1.7)
+- **Critical Fix**: Updated overlay positioning to be relative to the canvas bounding box, fixing alignment issues with UI scaling or layout changes.
+- **Improved Structure**: Restructured module files into `scripts/` and `styles/` directories.
+- **Manifest Update**: Added system restriction (`dnd5e`) and updated manifest structure for better compatibility.
+- **Bug Fix**: Added defensive checks to `updateToken` and `createToken` hooks to prevent errors in edge cases.
+- **Hygiene**: Removed IDE metadata from the repository and cleaned up CSS/HTML rendering.
+
 ### Patch Notes (v1.1.6)
 - **New Feature**: Added a toggle button to the **Token Instruments** (left-hand controls) to enable/disable AC overlays.
   - Icon: A white shield icon.
