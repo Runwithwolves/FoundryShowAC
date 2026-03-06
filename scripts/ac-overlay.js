@@ -248,7 +248,7 @@ Hooks.once('init', () => {
         type: String,
         default: '#ff0000',
         onChange: (value) => {
-            if (acOverlayManager) acOverlayManager.setColor(value);
+            if (game.user.isGM && acOverlayManager) acOverlayManager.setColor(value);
         }
     });
 
@@ -261,7 +261,7 @@ Hooks.once('init', () => {
         type: String,
         default: '#ff0000',
         onChange: (value) => {
-            if (acOverlayManager) acOverlayManager.setColor(value);
+            if (game.user.isGM && acOverlayManager) acOverlayManager.setColor(value);
         }
     });
 
@@ -273,7 +273,7 @@ Hooks.once('init', () => {
         type: Boolean,
         default: true,
         onChange: (value) => {
-            if (acOverlayManager) {
+            if (game.user.isGM && acOverlayManager) {
                 acOverlayManager.enabled = value;
                 acOverlayManager.drawAll();
             }
@@ -308,6 +308,8 @@ Hooks.on('getSceneControlButtons', (controls) => {
  * 2. Synchronize the palette and manual hex input live in the UI.
  */
 Hooks.on('renderSettingsConfig', (app, html, data) => {
+    if (!game.user.isGM) return;
+    
     const paletteInput = html.find('input[name="foundry-ac.acColor"]');
     const manualInput = html.find('input[name="foundry-ac.acManualColor"]');
 
@@ -340,7 +342,9 @@ Hooks.on('renderSettingsConfig', (app, html, data) => {
 
 // Initialize the module logic once Foundry is ready
 Hooks.once('ready', () => {
-    acOverlayManager.init();
+    if (game.user.isGM) {
+        acOverlayManager.init();
+    }
 });
 
 console.log('DnD AC Show | Module script loaded');
